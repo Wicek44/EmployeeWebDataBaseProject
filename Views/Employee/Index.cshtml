@@ -1,0 +1,83 @@
+﻿@model List<EmployeeModel>
+
+
+
+@if (User.IsInRole("Administrator"))
+{
+    <a class="btn btn-primary" asp-action="Add" asp-controller="Employee">Add</a>
+}
+
+<br><br>
+
+<table>
+    <tr>
+        <th>
+            @nameof(EmployeeModel.FirstName)
+        </th>
+        <th>
+            @nameof(EmployeeModel.LastName)
+        </th>
+        <th>
+            @nameof(EmployeeModel.Age)
+        </th>
+
+        @if (User.IsInRole("Administrator") || User.IsInRole("Acountant") || User.IsInRole("Employee"))
+        {
+            <th>
+                @nameof(EmployeeModel.Salary)
+            </th>
+        }
+
+        <th>
+            @nameof(EmployeeModel.JobTitle)
+        </th>
+        <th>
+            @nameof(EmployeeModel.Position)
+        </th>
+        
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+
+            @if (User.IsInRole("Administrator") || User.IsInRole("Accountant") || User.IsInRole("Employee"))
+            {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salary)
+                </td>
+            }
+
+            <td>
+                @Html.DisplayFor(modelItem => item.JobTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Position)
+            </td>
+
+            @if (User.IsInRole("Administrator") || User.IsInRole("Employee") || User.IsInRole("Accountant"))
+            {
+                <td>
+
+                    <a class="btn btn-primary" href="@Url.Action("Edit", "Employee", new { personId = item.ID } )">Edit</a> 
+
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <a class="btn btn-primary" href="@Url.Action("Delete", "Employee", new { personId = item.ID } )">Delete</a>
+                    }
+
+                </td>
+            }
+
+        </tr>
+    }
+</table>
